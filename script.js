@@ -21,7 +21,7 @@ function tambahUser() {
 
   alert("Registrasi berhasil!");
   saveToStorage(JSON.stringify(users));
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 function saveToStorage(users) {
@@ -39,10 +39,10 @@ function login() {
       users[i].password === inPassword.value
     ) {
       alert("Login Berhasil");
-      window.location.href = "note.html";
+      window.location.href = "main.html";
     } else {
       alert("Login Gagal");
-      window.location.href = "login.html";
+      window.location.href = "index.html";
     }
   }
 }
@@ -102,7 +102,7 @@ function tambahCatatan() {
 
 function logout() {
   localStorage.removeItem("user");
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 function hapusCatatan(index) {
