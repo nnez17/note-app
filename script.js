@@ -96,6 +96,11 @@ function tambahCatatan() {
   note.value = "";
   title.value = "";
 
+  if (title == "" || note == "") {
+    alert("Semua field harus diisi!");
+    return;
+  }
+
   daftarCatatan.push(noteObj);
   tampilkanCatatan();
 }
@@ -110,3 +115,10 @@ function hapusCatatan(index) {
   tampilkanCatatan();
   alert("Berhasil menghapus");
 }
+
+function displayUserEmail() {
+  let user = JSON.parse(localStorage.getItem("user"));
+  let dashboardEmail = document.querySelector(".dashboard-email");
+  dashboardEmail.innerHTML = user[0].email;
+}
+displayUserEmail();
