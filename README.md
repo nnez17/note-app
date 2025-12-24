@@ -1,1 +1,1 @@
-# dbs-class-note-app
+# note-app
