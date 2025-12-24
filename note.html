@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Note Keep</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css"
+    />
+    <link rel="stylesheet" href="global.css">
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="judul">
+        <div class="judul-teks">
+          <p>DASHBOARD</p>
+          <h2>Hi, student@uni.edu</h2>
+        </div>
+        <i onclick="logout()" class="hgi hgi-stroke hgi-logout-circle-02 logo-keluar"></i>
+      </div>
+      <div class="header">
+        <div class="form-header">
+          <i class="hgi hgi-stroke hgi-property-edit logo-create"></i>
+          <span>Create New Note</span>
+        </div>
+        <div class="input">
+          <input id="title" type="text" placeholder="Note title" class="input-title" />
+          <textarea id="note"
+            class="input-note"
+            placeholder="Write your thoughts here..."
+          ></textarea>
+          <button onclick="tambahCatatan()" class="btn-add-note">+ Add Note</button>
+        </div>
+      </div>
+      <div class="notes">
+        <h2>Your Notes</h2>
+        <div id="wadah">
+          <!-- <div class="note">
+             <div class="note-top">
+              <div class="note-left">
+                <h3>React Hooks Study</h3>
+                <label>Oct 24, 2025</label>
+              </div>
+              <div class="note-right">
+                <i class="hgi hgi-stroke hgi-edit-02"></i>
+                <i class="hgi hgi-stroke hgi-delete-03"></i>
+              </div>
+            </div>
+            <div class="note-text">
+              <p>
+                Remember to review useEffect dependencies array. Ideally, include
+                all variables used inside the effect.
+              </p>
+            </div>
+          </div>
+  
+          <div class="note">
+            <div class="note-top">
+              <div class="note-left">
+                <h3>React Hooks Study</h3>
+                <label>Oct 24, 2025</label>
+              </div>
+              <div class="note-right">
+                <i class="hgi hgi-stroke hgi-edit-02"></i>
+                <i class="hgi hgi-stroke hgi-delete-03"></i>
+              </div>
+            </div>
+            <div class="note-text">
+              <p>
+                Remember to review useEffect dependencies array. Ideally, include
+                all variables used inside the effect.
+              </p>
+            </div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>

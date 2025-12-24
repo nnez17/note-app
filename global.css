@@ -1,0 +1,208 @@
+body {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+}
+h1 {
+  font-size: 24pt;
+  color: #333333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+p {
+  font-size: 14pt;
+  color: #4e8b97;
+  text-align: center;
+}
+.container {
+  width: 390px;
+  margin: 0 auto;
+  padding: 30px;
+  margin-top: 50px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.input input {
+  display: flex;
+  flex-direction: column;
+  width: 363px;
+  padding: 12px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+.input button {
+  background-color: #19c3e6;
+  color: white;
+  padding: 10px 20px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 390px;
+}
+.logo {
+  display: block;
+  margin: 0 auto;
+  width: 30pt;
+  border-radius: 8px;
+  height: auto;
+  color: #19c3e6;
+  background-color: #e1f5f9;
+  font-size: 26pt;
+  text-align: center;
+  padding: 10px;
+}
+.input label {
+  font-size: 16px;
+  font-weight: bold;
+  color: #333333;
+  margin-top: -10px;
+}
+.fp {
+  float: right;
+  font-size: 14px;
+  color: #19c3e6;
+  cursor: pointer;
+}
+.fp:hover {
+  text-decoration: underline;
+}
+.dont:hover {
+  text-decoration: underline;
+}
+
+button:hover {
+  background-color: #17accf;
+}
+.input > input::placeholder {
+  font-size: 16px;
+  color: #999999;
+}
+.input {
+  margin-bottom: 20px;
+}
+.dont {
+  font-size: 14px;
+  color: #4e8b97;
+  cursor: pointer;
+}
+.judul {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.judul-teks {
+  font-weight: bold;
+}
+.judul-teks p {
+  color: #777777;
+  font-size: 10pt;
+  margin-bottom: 0;
+  text-align: left;
+}
+.judul-teks h2 {
+  margin-top: 0;
+  font-size: 16pt;
+  text-align: left;
+}
+.logo-keluar {
+  font-size: 30px;
+}
+.header {
+  background-color: white;
+  margin-top: 35px;
+}
+.form-header {
+  display: flex;
+  align-items: center;
+}
+.form-header span {
+  font-size: 12px;
+  font-weight: bold;
+}
+.logo-create {
+  font-size: 30px;
+  padding: 10px;
+  color: #19c3e6;
+}
+.input {
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.input-title {
+  width: calc(100% - 23px);
+  height: 45px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border: 2px solid #c4c4c4;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  color: #7e7e7e;
+}
+.input-note {
+  width: 100%;
+  height: 100px;
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 8px;
+  border: 2px solid #c4c4c4;
+  color: #7e7e7e;
+  resize: vertical;
+}
+.btn-add-note {
+  background-color: #19c3e6;
+  color: white;
+  font-weight: bold;
+  border: none;
+  display: block;
+  margin: auto;
+  margin-top: 20px;
+  width: 100%;
+  padding: 8px;
+  border-radius: 5px;
+}
+.notes {
+  padding-top: 15px;
+}
+.your-notes h2 {
+  font-size: 16pt;
+  font-weight: bold;
+}
+.note {
+  background-color: white;
+}
+.note-top {
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+.note-left {
+  padding-left: 10px;
+}
+.note-left h3 {
+  margin-bottom: 0px;
+  margin-top: 10px;
+  font-size: 14pt;
+  font-weight: bold;
+}
+.note-left label {
+  color: #4e8b97;
+  font-size: 12pt;
+}
+.note-right {
+  padding-right: 10px;
+  font-size: 20px;
+}
+.note-text {
+  padding: 10px;
+}
+.note-text p {
+  font-size: 12pt;
+  text-align: left;
+}

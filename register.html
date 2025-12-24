@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+  </head>
+  <link rel="stylesheet" href="global.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css"
+  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+    rel="stylesheet"
+  />
+  <body>
+    <div class="container">
+      <i class="hgi hgi-stroke hgi-note-05 logo"></i>
+      <h1>Get Started</h1>
+      <p>Create a free account to save your notes and access them anywhere</p>
+      <div class="input">
+        <label for="email">Email Address</label>
+        <input id="email" type="email" placeholder="name@example.com" />
+      </div>
+      <div class="input">
+        <label for="password">Password</label>
+        <input id="password" type="password" placeholder="enter password" />
+        <span class="dont">Don't have an account?</span>
+      </div>
+      <div class="input">
+        <label for="confirm-password">Confirm Password</label>
+        <input
+          id="confirm-password"
+          type="password"
+          placeholder="Re-enter password"
+        />
+      </div>
+      <div class="input">
+        <button onclick="tambahUser()">Register</button>
+        <p style="font-size: 14px">
+          Already a member
+          <a style="color: #19b9da" href="login.html">Log in</a>
+        </p>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
