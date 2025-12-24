@@ -33,13 +33,16 @@ function login() {
   let inPassword = document.getElementById("password");
   let users = JSON.parse(localStorage.getItem("user"));
 
-  for (let i = 0; i < users.length; i++) {
+  for (let i = 0; i < 1; i++) {
     if (
       users[i].email === inEmail.value &&
       users[i].password === inPassword.value
     ) {
       alert("Login Berhasil");
       window.location.href = "note.html";
+    } else {
+      alert("Login Gagal");
+      window.location.href = "login.html";
     }
   }
 }
@@ -48,7 +51,8 @@ let daftarCatatan = [];
 
 function tampilkanCatatan() {
   let wadah = document.getElementById("wadah");
-  for (let i = 0; i < 1; i++) {
+  wadah.innerHTML = "";
+  for (let i = 0; i < daftarCatatan.length; i++) {
     wadah.innerHTML += `
     <div class="note">
       <div class="note-top">
@@ -57,8 +61,8 @@ function tampilkanCatatan() {
           <label>${daftarCatatan[i].tgl}</label>
         </div>
         <div class="note-right">
-          <i class="hgi hgi-stroke hgi-edit-02"></i>
-          <i class="hgi hgi-stroke hgi-delete-03"></i>
+          <i class="hgi hgi-stroke hgi-edit-02 edit"></i>
+          <i onclick = "hapusCatatan(${i})" class="hgi hgi-stroke hgi-delete-03 hapus"></i>
         </div>
       </div>
       <div class="note-text">
@@ -81,6 +85,7 @@ function tambahCatatan() {
     month: "short",
     day: "numeric",
   };
+
   let tanggal = tgl.toLocaleDateString("en-US", options);
 
   let noteObj = {
@@ -88,6 +93,9 @@ function tambahCatatan() {
     tgl: tanggal,
     note: note,
   };
+  note.value = "";
+  title.value = "";
+
   daftarCatatan.push(noteObj);
   tampilkanCatatan();
 }
@@ -95,4 +103,10 @@ function tambahCatatan() {
 function logout() {
   localStorage.removeItem("user");
   window.location.href = "login.html";
+}
+
+function hapusCatatan(index) {
+  daftarCatatan.splice(index, 1);
+  tampilkanCatatan();
+  alert("Berhasil menghapus");
 }
