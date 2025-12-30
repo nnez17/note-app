@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Note Keep</title>
+    <!-- Path relative dari root karena file dilayani dari root -->
+    <link rel="stylesheet" href="./global.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.hugeicons.com/font/hgi-stroke-rounded.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Loading screen -->
+    <div id="loading">
+      <div class="loading-spinner"></div>
+    </div>
+
+    <div class="app-container">
+      <!-- Halaman Login -->
+      <div id="login-page" class="page active">
+        <div class="container">
+          <i class="hgi hgi-stroke hgi-note-05 logo"></i>
+          <h1>Note Keep</h1>
+          <p>Enter your email and password to access your notes</p>
+          <div class="input">
+            <label for="login-email">Email</label>
+            <input
+              id="login-email"
+              type="email"
+              placeholder="name@example.com"
+            />
+          </div>
+          <div class="input">
+            <span class="fp" onclick="navigateTo('forgot-password')"
+              >Forgot Password?</span
+            >
+            <label for="login-password">Password</label>
+            <input
+              id="login-password"
+              type="password"
+              placeholder="enter password"
+            />
+          </div>
+          <div class="input">
+            <button onclick="handleLogin()">Log In</button>
+            <p style="font-size: 14px">
+              Don't have an account?
+              <a
+                style="color: #19b9da"
+                href="#"
+                onclick="navigateTo('register')"
+                >Sign Up</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Halaman Register -->
+      <div id="register-page" class="page">
+        <div class="container">
+          <i class="hgi hgi-stroke hgi-note-05 logo"></i>
+          <h1>Get Started</h1>
+          <p>
+            Create a free account to save your notes and access them anywhere
+          </p>
+          <div class="input">
+            <label for="register-email">Email Address</label>
+            <input
+              id="register-email"
+              type="email"
+              placeholder="name@example.com"
+            />
+          </div>
+          <div class="input">
+            <label for="register-password">Password</label>
+            <input
+              id="register-password"
+              type="password"
+              placeholder="enter password"
+            />
+            <span class="dont">Don't have an account?</span>
+          </div>
+          <div class="input">
+            <label for="confirm-password">Confirm Password</label>
+            <input
+              id="confirm-password"
+              type="password"
+              placeholder="Re-enter password"
+            />
+          </div>
+          <div class="input">
+            <button onclick="handleRegister()">Register</button>
+            <p style="font-size: 14px">
+              Already a member
+              <a style="color: #19b9da" href="#" onclick="navigateTo('login')"
+                >Log in</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Halaman Forgot Password -->
+      <div id="forgot-password-page" class="page">
+        <div class="container">
+          <i class="hgi hgi-stroke hgi-note-05 logo"></i>
+          <h1>Forgot Password</h1>
+          <p>Enter your email to reset your password</p>
+          <div class="input">
+            <label for="forgot-email">Email Address</label>
+            <input
+              id="forgot-email"
+              type="email"
+              placeholder="name@example.com"
+            />
+          </div>
+          <div class="input">
+            <button onclick="handleForgotPassword()">Reset Password</button>
+            <p style="font-size: 14px">
+              Remember your password?
+              <a style="color: #19b9da" href="#" onclick="navigateTo('login')"
+                >Log in</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Halaman Main (Dashboard) -->
+      <div id="main-page" class="page">
+        <div class="container">
+          <div class="judul">
+            <div class="judul-teks">
+              <p>DASHBOARD</p>
+              <h2>Hi, <span class="dashboard-email">student@uni.edu</span></h2>
+            </div>
+            <i
+              onclick="handleLogout()"
+              class="hgi hgi-stroke hgi-logout-circle-02 logout"
+            ></i>
+          </div>
+          <div class="header">
+            <div class="form-header">
+              <i class="hgi hgi-stroke hgi-property-edit logo-create"></i>
+              <span>Create New Note</span>
+            </div>
+            <div class="input">
+              <input
+                id="title"
+                type="text"
+                placeholder="Note title"
+                class="input-title"
+              />
+              <textarea
+                id="note"
+                class="input-note"
+                placeholder="Write your thoughts here..."
+              ></textarea>
+              <button onclick="handleAddNote()" class="btn-add-note">
+                + Add Note
+              </button>
+            </div>
+          </div>
+          <div class="notes">
+            <h2>Your Notes</h2>
+            <div id="wadah">
+              <!-- Notes will be displayed here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal Edit Note -->
+    <div id="editModal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Edit Note</h2>
+          <button onclick="closeEditModal()" class="modal-close">×</button>
+        </div>
+        <div class="modal-body">
+          <input
+            id="editTitle"
+            type="text"
+            placeholder="Note Title"
+            class="edit-title-input"
+          />
+          <textarea
+            id="editNote"
+            placeholder="Write your note here..."
+            class="edit-note-input"
+          ></textarea>
+        </div>
+        <div class="modal-toolbar">
+          <button
+            class="toolbar-btn"
+            onclick="formatEditText('bold')"
+            title="Bold"
+          >
+            <strong>B</strong>
+          </button>
+          <button
+            class="toolbar-btn"
+            onclick="formatEditText('italic')"
+            title="Italic"
+          >
+            <em>I</em>
+          </button>
+          <button
+            class="toolbar-btn"
+            onclick="formatEditText('underline')"
+            title="Underline"
+          >
+            <u>U</u>
+          </button>
+          <button
+            class="toolbar-btn"
+            onclick="formatEditText('strikethrough')"
+            title="Strikethrough"
+          >
+            <s>S</s>
+          </button>
+          <div class="divider"></div>
+          <button
+            class="toolbar-btn"
+            onclick="insertEditList()"
+            title="Bullet List"
+          >
+            •
+          </button>
+          <button
+            class="toolbar-btn"
+            onclick="insertEditNumberedList()"
+            title="Numbered List"
+          >
+            1.
+          </button>
+          <button
+            class="toolbar-btn"
+            onclick="insertEditCheckbox()"
+            title="Checkbox"
+          >
+            ☑
+          </button>
+          <div class="divider"></div>
+          <button
+            class="toolbar-btn"
+            onclick="insertEditHeading()"
+            title="Heading"
+          >
+            H
+          </button>
+          <button
+            class="toolbar-btn"
+            onclick="insertEditDivider()"
+            title="Divider"
+          >
+            ━
+          </button>
+          <button
+            class="toolbar-btn"
+            onclick="insertEditDate()"
+            title="Insert Date"
+          >
+            📅
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button onclick="closeEditModal()" class="btn-cancel">Cancel</button>
+          <button onclick="simpanEdit()" class="btn-save">Save Changes</button>
+        </div>
+      </div>
+    </div>
+    <script src="./script.js"></script>
+  </body>
+</html>

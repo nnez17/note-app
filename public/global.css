@@ -219,13 +219,6 @@ button:hover {
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.hapus {
-  cursor: pointer;
-}
-.hapus:hover {
-  background-color: #9b9494;
-  border-radius: 8px;
-}
 .note-text strong {
   font-weight: 700;
   color: #1f2937;
@@ -516,9 +509,73 @@ button:hover {
 .modal-overlay.active {
   animation: fadeIn 0.3s ease-in-out;
 }
-.modal-overlay::-webkit-scrollbar {
+*::-webkit-scrollbar {
   display: none;
 }
-.modal-content::-webkit-scrollbar {
-  display: none;
+.page {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.page.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: all;
+  visibility: visible;
+}
+
+.page.exit {
+  opacity: 0;
+  transform: translateX(-20px);
+  pointer-events: none;
+}
+.empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+}
+
+.empty-state i {
+  font-size: 48px;
+  color: #ccc;
+  margin-bottom: 20px;
+  display: block;
+}
+@media (max-width: 390px) {
+  .container {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .note {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .header {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .modal-content {
+    width: 95%;
+    max-height: 95vh;
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 15px 20px;
+  }
+
+  .edit-note-input {
+    min-height: 200px;
+  }
 }
