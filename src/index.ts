@@ -2,7 +2,6 @@ import { Elysia } from "elysia";
 import { staticPlugin } from "@elysiajs/static";
 import { cors } from "@elysiajs/cors";
 
-// Firebase Admin SDK types (manual implementation for Bun)
 interface User {
   id: string;
   email: string;
@@ -24,7 +23,6 @@ interface FirestoreResponse {
   fields?: any;
 }
 
-// Firebase REST API configuration
 const FIREBASE_CONFIG = {
   apiKey: "AIzaSyAms8wQyV4Ucj7WsqKGrZutwFV5Fc1pzpI",
   authDomain: "note-app-40dae.firebaseapp.com",
@@ -35,7 +33,6 @@ const FIREBASE_CONFIG = {
 
 const FIRESTORE_URL = `https://firestore.googleapis.com/v1/projects/${FIREBASE_CONFIG.projectId}/databases/(default)/documents`;
 
-// Helper function to make Firestore requests
 async function firestoreRequest(
   path: string,
   method: string = "GET",
@@ -62,7 +59,6 @@ async function firestoreRequest(
   return response.json() as Promise<FirestoreResponse>;
 }
 
-// Convert Firestore document to simple object
 function firestoreToObject(doc: any): any {
   if (!doc.fields) return null;
 
@@ -81,7 +77,6 @@ function firestoreToObject(doc: any): any {
   return obj;
 }
 
-// Convert object to Firestore format
 function objectToFirestore(obj: any): any {
   const fields: any = {};
 
@@ -98,7 +93,6 @@ function objectToFirestore(obj: any): any {
   return { fields };
 }
 
-// Generate unique ID
 function generateId(): string {
   return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 }
@@ -122,9 +116,7 @@ const app = new Elysia()
     }
 
     try {
-      // Check if user exists
       const usersQuery = await firestoreRequest(`/users?pageSize=1000`);
-
       if (usersQuery.documents) {
         const existingUser = usersQuery.documents.find((doc: any) => {
           const user = firestoreToObject(doc);
@@ -137,11 +129,10 @@ const app = new Elysia()
         }
       }
 
-      // Create new user
       const userId = generateId();
       const newUser = {
         email,
-        password, // Note: In production, hash passwords!
+        password,
         createdAt: new Date().toISOString(),
       };
 
@@ -151,7 +142,6 @@ const app = new Elysia()
         objectToFirestore(newUser)
       );
 
-      // Generate simple token
       const token = `token-${Date.now()}-${userId}`;
 
       return {
@@ -167,15 +157,12 @@ const app = new Elysia()
 
   .post("/api/auth/login", async ({ body, set }) => {
     const { email, password } = body as { email: string; password: string };
-
-    // Validation
     if (!email || !password) {
       set.status = 400;
       return { error: "Email and password are required" };
     }
 
     try {
-      // Find user
       const usersQuery = await firestoreRequest(`/users?pageSize=1000`);
 
       let foundUser = null;
@@ -207,7 +194,6 @@ const app = new Elysia()
     }
   })
 
-  // Notes Routes
   .get("/api/notes", async ({ query, set }) => {
     const userId = query.userId || "";
 
@@ -286,7 +272,6 @@ const app = new Elysia()
     }
 
     try {
-      // Get existing note
       const existingDoc = await firestoreRequest(`/notes/${id}`);
       const existingNote = firestoreToObject(existingDoc);
 
@@ -295,7 +280,6 @@ const app = new Elysia()
         return { error: "Note not found" };
       }
 
-      // Update note
       const updatedNote = {
         title,
         content,
@@ -330,7 +314,6 @@ const app = new Elysia()
     }
   })
 
-  // Health check endpoint
   .get("/api/health", async () => {
     try {
       const usersQuery = await firestoreRequest(`/users?pageSize=1`);
@@ -350,7 +333,6 @@ const app = new Elysia()
     }
   })
 
-  // Serve static files - must be last
   .use(
     staticPlugin({
       assets: "./public",
@@ -360,8 +342,11 @@ const app = new Elysia()
 
   .listen(3000);
 
-console.log(
-  `🚀 ElysiaJS server running at http://${app.server?.hostname}:${app.server?.port}`
-);
-console.log(`📝 Note Keep API ready with Firebase Firestore!`);
-console.log(`🔥 Firebase Project: ${FIREBASE_CONFIG.projectId}`);
+console.log(`
+🚀 ElysiaJS Server Running!
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📡 Server: http://${app.server?.hostname}:${app.server?.port}
+🔥 Database: Firebase Firestore
+📂 Project: ${FIREBASE_CONFIG.projectId}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+`);

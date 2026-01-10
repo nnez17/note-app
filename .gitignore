@@ -1,29 +1,33 @@
-# Environment variables
+# Environment Variables
 .env
 .env.local
-.env.*.local
+.env.production
 
 # Dependencies
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+bun.lockb
 
-# Build output
+# Build outputs
 dist/
 build/
-
-# Editor directories
-.vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
+*.log
 
 # OS files
 .DS_Store
 Thumbs.db
 
-# Firebase
-.firebase/
-firebase-debug.log
-firestore-debug.log
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Testing
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+tmp/
+temp/
