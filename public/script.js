@@ -1,21 +1,19 @@
-// Firebase Configuration
+// ==================== FIREBASE CONFIG ====================
 const firebaseConfig = {
-  apiKey: "AIzaSyAms8wQyV4Ucj7WsqKGrZutwFV5Fc1pzpI",
-  authDomain: "note-app-40dae.firebaseapp.com",
-  databaseURL:
-    "https://note-app-40dae-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "note-app-40dae",
-  storageBucket: "note-app-40dae.firebasestorage.app",
-  messagingSenderId: "141836591412",
-  appId: "1:141836591412:web:3dd066e68a8181f7b74561",
-  measurementId: "G-GWPB3GZC0V",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  databaseURL: import.meta.env.VITE_FIREBASE_DATABASE_URL,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 let daftarCatatan = [];
 let indexSedangDiedit = null;
 
 // ==================== FIREBASE INITIALIZATION ====================
-
 async function initFirebase() {
   try {
     const { initializeApp } = await import(
@@ -75,7 +73,6 @@ async function initFirebase() {
 }
 
 // ==================== SESSION STORAGE ====================
-
 function getCurrentUser() {
   const userStr = sessionStorage.getItem("currentUser");
   return userStr ? JSON.parse(userStr) : null;
@@ -105,30 +102,28 @@ function requireAuth() {
 }
 
 // ==================== MARKDOWN RENDERER ====================
-
 function renderMarkdown(text) {
   if (!text) return "";
 
   text = text.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
-  text = text.replace(/__(.+?)__/g, "<u>$1</u>");
+  text = text.replace(/__(.+?)__/g, "<u>__$1__</u>");
   text = text.replace(/\*(.+?)\*/g, "<em>$1</em>");
   text = text.replace(/_(.+?)_/g, "<em>$1</em>");
-  text = text.replace(/~~(.+?)~~/g, "<del>$1</del>");
-  text = text.replace(/`(.+?)`/g, "<code>$1</code>");
-  text = text.replace(/^## (.+)$/gm, "<h3>$1</h3>");
-  text = text.replace(/^> (.+)$/gm, "<blockquote>$1</blockquote>");
+  text = text.replace(/~~(.+?)~~/g, "<del>~~$1~~</del>");
+  text = text.replace(/`(.+?)`/g, "<code>`$1`</code>");
+  text = text.replace(/^## (.+)$/gm, "<div class='heading'>$1</div>");
+  text = text.replace(/^> (.+)$/gm, "<div class='quote'>$1</div>");
   text = text.replace(/^---$/gm, "<hr>");
-  text = text.replace(/☐/g, '<input type="checkbox" disabled>');
-  text = text.replace(/☑/g, '<input type="checkbox" checked disabled>');
-  text = text.replace(/^• (.+)$/gm, "<li>$1</li>");
-  text = text.replace(/^\d+\. (.+)$/gm, "<li>$1</li>");
+  text = text.replace(/☐/g, '<span class="checkbox">☐</span>');
+  text = text.replace(/☑/g, '<span class="checkbox checked">☑</span>');
+  text = text.replace(/^• (.+)$/gm, "<div class='list-item'>* $1</div>");
+  text = text.replace(/^\d+\. (.+)$/gm, "<div class='list-item'>* $1</div>");
   text = text.replace(/\n/g, "<br>");
 
   return text;
 }
 
 // ==================== AUTH FUNCTIONS ====================
-
 async function login() {
   const email = document.getElementById("login-email").value.trim();
   const password = document.getElementById("login-password").value.trim();
@@ -145,8 +140,8 @@ async function login() {
       email,
       password
     );
-    const user = userCredential.user;
 
+    const user = userCredential.user;
     setCurrentUser({ id: user.uid, email: user.email });
     setToken(user.uid);
 
@@ -197,8 +192,8 @@ async function register() {
       email,
       password
     );
-    const user = userCredential.user;
 
+    const user = userCredential.user;
     setCurrentUser({ id: user.uid, email: user.email });
     setToken(user.uid);
 
@@ -218,7 +213,6 @@ async function register() {
 }
 
 // ==================== FIRESTORE NOTES FUNCTIONS ====================
-
 async function loadNotesFromFirestore() {
   const user = getCurrentUser();
   if (!user) return;
@@ -245,15 +239,12 @@ async function loadNotesFromFirestore() {
       });
     });
 
-    // Sort by date descending (newest first)
     daftarCatatan.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
     tampilkanCatatan();
     console.log(`Loaded ${daftarCatatan.length} notes`);
   } catch (error) {
     console.error("Failed to load notes:", error);
-
-    // Check if it's a permission error
     if (error.code === "permission-denied") {
       alert(
         "Permission denied. Please set up Firestore rules in Firebase Console.\n\nGo to: Firebase Console > Firestore Database > Rules\n\nSet rules to allow read/write for authenticated users."
@@ -261,8 +252,6 @@ async function loadNotesFromFirestore() {
     } else {
       alert("Failed to load notes. Please try again.");
     }
-
-    // Show empty state
     tampilkanCatatan();
   }
 }
@@ -376,10 +365,11 @@ window.hapusCatatan = async function (index) {
     try {
       const { doc, deleteDoc } = window.firebaseModules;
       const noteRef = doc(window.firebaseDb, "notes", note.id);
-      await deleteDoc(noteRef);
 
+      await deleteDoc(noteRef);
       daftarCatatan.splice(index, 1);
       tampilkanCatatan();
+
       alert("Note deleted successfully!");
     } catch (error) {
       console.error("Delete note error:", error);
@@ -389,7 +379,6 @@ window.hapusCatatan = async function (index) {
 };
 
 // ==================== UI HANDLERS ====================
-
 window.handleLogin = function () {
   login();
 };
@@ -444,7 +433,6 @@ window.handleForgotPassword = async function () {
     navigateTo("login");
   } catch (error) {
     console.error("Password reset error:", error);
-
     if (error.code === "auth/user-not-found") {
       alert("No account found with this email address.");
     } else if (error.code === "auth/invalid-email") {
@@ -486,12 +474,9 @@ function tampilkanCatatan() {
   const wadah = document.getElementById("wadah");
 
   if (!daftarCatatan || daftarCatatan.length === 0) {
-    wadah.innerHTML = `
-      <div class="empty-state">
-        <i class="hgi hgi-stroke hgi-note-05"></i>
-        <p>No notes yet. Create your first note!</p>
-      </div>
-    `;
+    wadah.innerHTML = `<div class="empty-state">
+      <p>No notes yet. Create your first note!</p>
+    </div>`;
     return;
   }
 
@@ -499,23 +484,18 @@ function tampilkanCatatan() {
     .map((catatan, index) => {
       let renderedTitle = renderMarkdown(catatan.title);
       let renderedNote = renderMarkdown(catatan.note);
-      return `
-    <div class="note">
-      <div class="note-top">
-        <div class="note-left">
-          <h3>${renderedTitle}</h3>
-          <label>${catatan.tgl}</label>
+
+      return `<div class="catatan-item">
+        <div class="catatan-header">
+          <div class="catatan-title">${renderedTitle}</div>
+          <div class="catatan-date">${catatan.tgl}</div>
         </div>
-        <div class="note-right">
-          <i onclick="editCatatan(${index})" class="hgi hgi-stroke hgi-edit-02" style="cursor: pointer; margin-right: 5px;"></i>
-          <i onclick="hapusCatatan(${index})" class="hgi hgi-stroke hgi-delete-03" style="cursor: pointer;"></i>
+        <div class="catatan-content">${renderedNote}</div>
+        <div class="catatan-actions">
+          <button onclick="editCatatan(${index})" class="btn-edit">✏️ Edit</button>
+          <button onclick="hapusCatatan(${index})" class="btn-delete">🗑️ Delete</button>
         </div>
-      </div>
-      <div class="note-text">
-        <p>${renderedNote}</p>
-      </div>
-    </div>
-  `;
+      </div>`;
     })
     .join("");
 }
@@ -541,7 +521,6 @@ window.closeEditModal = function () {
 };
 
 // ==================== EDITOR FUNCTIONS ====================
-
 window.formatEditText = function (format) {
   const textarea = document.getElementById("editNote");
   const start = textarea.selectionStart;
@@ -554,7 +533,6 @@ window.formatEditText = function (format) {
   }
 
   let formattedText = selectedText;
-
   if (format === "bold") formattedText = `**${selectedText}**`;
   else if (format === "italic") formattedText = `*${selectedText}*`;
   else if (format === "underline") formattedText = `__${selectedText}__`;
@@ -564,7 +542,6 @@ window.formatEditText = function (format) {
     textarea.value.substring(0, start) +
     formattedText +
     textarea.value.substring(end);
-
   textarea.focus();
   textarea.setSelectionRange(
     start + formattedText.length,
@@ -581,7 +558,6 @@ window.insertEditList = function () {
     textarea.value.substring(0, lineStart) +
     "• " +
     textarea.value.substring(lineStart);
-
   textarea.focus();
   textarea.setSelectionRange(start + 2, start + 2);
 };
@@ -595,7 +571,6 @@ window.insertEditNumberedList = function () {
     textarea.value.substring(0, lineStart) +
     "1. " +
     textarea.value.substring(lineStart);
-
   textarea.focus();
   textarea.setSelectionRange(start + 3, start + 3);
 };
@@ -609,7 +584,6 @@ window.insertEditCheckbox = function () {
     textarea.value.substring(0, lineStart) +
     "☐ " +
     textarea.value.substring(lineStart);
-
   textarea.focus();
   textarea.setSelectionRange(start + 2, start + 2);
 };
@@ -623,7 +597,6 @@ window.insertEditHeading = function () {
     textarea.value.substring(0, lineStart) +
     "## " +
     textarea.value.substring(lineStart);
-
   textarea.focus();
   textarea.setSelectionRange(start + 3, start + 3);
 };
@@ -631,13 +604,12 @@ window.insertEditHeading = function () {
 window.insertEditDivider = function () {
   const textarea = document.getElementById("editNote");
   const start = textarea.selectionStart;
-
   const divider = "\n---\n";
+
   textarea.value =
     textarea.value.substring(0, start) +
     divider +
     textarea.value.substring(start);
-
   textarea.focus();
   textarea.setSelectionRange(start + divider.length, start + divider.length);
 };
@@ -645,7 +617,6 @@ window.insertEditDivider = function () {
 window.insertEditDate = function () {
   const textarea = document.getElementById("editNote");
   const start = textarea.selectionStart;
-
   const now = new Date();
   const options = {
     year: "numeric",
@@ -660,7 +631,6 @@ window.insertEditDate = function () {
     textarea.value.substring(0, start) +
     dateString +
     textarea.value.substring(start);
-
   textarea.focus();
   textarea.setSelectionRange(
     start + dateString.length,
@@ -669,12 +639,10 @@ window.insertEditDate = function () {
 };
 
 // ==================== INITIALIZATION ====================
-
 window.addEventListener("DOMContentLoaded", async function () {
   console.log("Initializing Note Keep with Firebase...");
 
   const firebaseReady = await initFirebase();
-
   if (!firebaseReady) {
     document.getElementById("loading").style.display = "none";
     alert(
